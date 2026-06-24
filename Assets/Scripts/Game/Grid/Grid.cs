@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Grid : MonoBehaviour
 {
-    public int collumns = 0;
+    public int columns = 0;
     public int rows = 0;
     public float squaresGap = 0.1f;
     public GameObject gridSquare;
@@ -38,7 +38,7 @@ public class Grid : MonoBehaviour
 
         for (var row = 0; row < rows; row++)
         {
-            for (var column = 0; column < collumns; ++column)
+            for (var column = 0; column < columns; ++column)
             {
                 _gridSquares.Add(Instantiate(gridSquare) as GameObject);
                 _gridSquares[_gridSquares.Count - 1].transform.SetParent(this.transform);
@@ -62,7 +62,7 @@ public class Grid : MonoBehaviour
 
         foreach (GameObject square in _gridSquares)
         {
-            if ( column_number + 1 > collumns)
+            if ( column_number + 1 > columns)
             {
                 square_gap_number.x = 0.0f;
                 // go to the next column
