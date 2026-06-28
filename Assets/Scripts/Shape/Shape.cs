@@ -44,29 +44,40 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
 
     public void OnDrag(PointerEventData eventData)
     {
+        // 1. Di chuyển gạch
         Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, eventData.position, eventData.pressEventCamera, out localPoint);
         rectTransform.localPosition = localPoint + offset;
 
         if (Grid.Instance == null) return;
 
-        // Xóa hết toàn bộ bóng mờ cũ trên Grid trước
+        // 2. Dọn sạch trạng thái cũ của toàn bộ lưới
         foreach (var square in Grid.Instance.gridSquaresMatrix)
         {
-            if (square != null) square.SetHover(false);
+            if (square != null)
+            {
+                square.SetHover(false);
+                square.SetErrorColor(false); // Dọn luôn màu đỏ cũ
+            }
         }
 
-        // Quét từng viên gạch con để bật bóng mờ tương ứng
+        // 3. Quét gạch con để bật trạng thái mới
         foreach (Transform child in transform)
         {
             if (!child.gameObject.activeSelf) continue;
 
-            // Truyền thẳng tọa độ thực tế (child.position) vào, KHÔNG dùng ScreenPoint nữa
-            GridSquare targetSquare = Grid.Instance.GetGridSquareAtPosition(child.position);
-
-            if (targetSquare != null)
+            GridSquare target = Grid.Instance.GetGridSquareAtPosition(child.position);
+            if (target != null)
             {
-                targetSquare.SetHover(true);
+                // Logic: Nếu ô đó ĐÃ CÓ GẠCH (Occupied) -> Bật đỏ. Nếu trống -> Bật xanh mờ.
+                if (target.isOccupied)
+                {
+                    target.SetErrorColor(true);
+                }
+                else
+                {
+                    target.SetHover(true);
+                }
             }
         }
     }
@@ -94,20 +105,26 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
             targetSquares.Add(target);
         }
 
+        // --- DỌN DẸP TRẠNG THÁI HIỂN THỊ CỦA TOÀN BỘ LƯỚI ---
+        foreach (var square in Grid.Instance.gridSquaresMatrix)
+        {
+            if (square != null)
+            {
+                square.SetHover(false);
+                square.SetErrorColor(false); // Dọn sạch màu đỏ ở đây
+            }
+        }
+
         if (canPlace)
         {
-            foreach (var square in targetSquares) square.ActivateSquare();
+            foreach (var square in targetSquares)
+                square.ActivateSquare();
+
             gameObject.SetActive(false); // Đặt xong thì ẩn khối đi
         }
         else
         {
-            // Thất bại: Dọn sạch bóng mờ và bay về ĐÚNG VỊ TRÍ GỐC
-            foreach (var square in Grid.Instance.gridSquaresMatrix)
-            {
-                if (square != null) square.SetHover(false);
-            }
-
-            // SỬA Ở ĐÂY: Bay về vị trí "nhà" đã lưu từ đầu
+            // Thất bại: Bay về đúng vị trí gốc
             rectTransform.localPosition = startLocalPosition;
         }
     }

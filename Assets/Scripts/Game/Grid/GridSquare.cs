@@ -13,7 +13,8 @@ public class GridSquare : MonoBehaviour
     public Image hoverImage;
     public Image activeImage;
 
-    // Biến kiểm tra xem ô này đã có gạch nằm chưa
+    public Image redImage;
+
     public bool isOccupied { get; private set; } = false;
 
     void Start()
@@ -22,13 +23,11 @@ public class GridSquare : MonoBehaviour
         if (activeImage != null) activeImage.gameObject.SetActive(false);
     }
 
-    // Hàm đổi màu cờ vua tập 1 của bạn (Giữ nguyên)
     public void SetImage(bool setFirstImage)
     {
         normalImage.sprite = setFirstImage ? normalImages[1] : normalImages[0];
     }
 
-    // Bật/tắt bóng mờ khi rê khối hình ngang qua (Tập 8)
     public void SetHover(bool state)
     {
         if (!isOccupied && hoverImage != null)
@@ -37,11 +36,15 @@ public class GridSquare : MonoBehaviour
         }
     }
 
-    // Đặt gạch thật xuống ô này (Tập 9)
     public void ActivateSquare()
     {
         isOccupied = true;
         if (hoverImage != null) hoverImage.gameObject.SetActive(false);
         if (activeImage != null) activeImage.gameObject.SetActive(true);
+    }
+
+    public void SetErrorColor(bool isError)
+    {
+        if (redImage != null) redImage.gameObject.SetActive(isError);
     }
 }
