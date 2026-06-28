@@ -1,8 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
-public class Shape : MonoBehaviour
+public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHandler
 {
     public GameObject squareShapeImage;
 
@@ -11,9 +12,104 @@ public class Shape : MonoBehaviour
 
     private List<GameObject> _currentShape = new List<GameObject>();
 
+    [Header("Drag Settings")]
+    public Vector3 shapeSelectedScale;
+    public Vector2 offset;             
+    private Vector3 shapeStartScale;
+
+    private RectTransform rectTransform;
+    private Canvas canvas;
+
+    private Vector3 startLocalPosition;
+
+    private void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+        canvas = GetComponentInParent<Canvas>();
+
+        shapeStartScale = this.transform.localScale;
+        startLocalPosition = rectTransform.localPosition;
+    }
+
     void Start()
     {
         
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        this.transform.localScale = shapeSelectedScale;
+        this.transform.SetAsLastSibling();
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, eventData.position, eventData.pressEventCamera, out localPoint);
+        rectTransform.localPosition = localPoint + offset;
+
+        if (Grid.Instance == null) return;
+
+        // Xóa hết toàn bộ bóng mờ cũ trên Grid trước
+        foreach (var square in Grid.Instance.gridSquaresMatrix)
+        {
+            if (square != null) square.SetHover(false);
+        }
+
+        // Quét từng viên gạch con để bật bóng mờ tương ứng
+        foreach (Transform child in transform)
+        {
+            if (!child.gameObject.activeSelf) continue;
+
+            // Truyền thẳng tọa độ thực tế (child.position) vào, KHÔNG dùng ScreenPoint nữa
+            GridSquare targetSquare = Grid.Instance.GetGridSquareAtPosition(child.position);
+
+            if (targetSquare != null)
+            {
+                targetSquare.SetHover(true);
+            }
+        }
+    }
+
+    // Xử lý thả tay ra và hít gạch vào lưới (Tập 9)
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        transform.localScale = shapeStartScale;
+        List<GridSquare> targetSquares = new List<GridSquare>();
+        bool canPlace = true;
+
+        foreach (Transform child in transform)
+        {
+            if (!child.gameObject.activeSelf) continue;
+
+            // Dùng lưới nam châm để tìm ô
+            GridSquare target = Grid.Instance.GetGridSquareAtPosition(child.position);
+
+            // Kiểm tra logic: Phải có ô, ô phải trống, và ô đó không được trùng với ô đã chọn
+            if (target == null || target.isOccupied || targetSquares.Contains(target))
+            {
+                canPlace = false;
+                break;
+            }
+            targetSquares.Add(target);
+        }
+
+        if (canPlace)
+        {
+            foreach (var square in targetSquares) square.ActivateSquare();
+            gameObject.SetActive(false); // Đặt xong thì ẩn khối đi
+        }
+        else
+        {
+            // Thất bại: Dọn sạch bóng mờ và bay về ĐÚNG VỊ TRÍ GỐC
+            foreach (var square in Grid.Instance.gridSquaresMatrix)
+            {
+                if (square != null) square.SetHover(false);
+            }
+
+            // SỬA Ở ĐÂY: Bay về vị trí "nhà" đã lưu từ đầu
+            rectTransform.localPosition = startLocalPosition;
+        }
     }
 
     public void RequestNewShape(ShapeData shapeData)
