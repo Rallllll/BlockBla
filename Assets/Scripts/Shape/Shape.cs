@@ -85,7 +85,9 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
     // Xử lý thả tay ra và hít gạch vào lưới (Tập 9)
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.localScale = shapeStartScale;
+        // KHÔNG ĐỔI SCALE Ở ĐÂY NỮA! 
+        // Giữ nguyên kích thước lúc đang kéo để máy tính quét ô lưới cho chuẩn xác.
+
         List<GridSquare> targetSquares = new List<GridSquare>();
         bool canPlace = true;
 
@@ -105,13 +107,17 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
             targetSquares.Add(target);
         }
 
+        // --- ĐỔI SCALE VỀ BAN ĐẦU Ở ĐÂY ---
+        // Sau khi đã chốt xong danh sách ô lưới, mới cho khối hình co dãn trở lại
+        transform.localScale = shapeStartScale;
+
         // --- DỌN DẸP TRẠNG THÁI HIỂN THỊ CỦA TOÀN BỘ LƯỚI ---
         foreach (var square in Grid.Instance.gridSquaresMatrix)
         {
             if (square != null)
             {
                 square.SetHover(false);
-                square.SetErrorColor(false); // Dọn sạch màu đỏ ở đây
+                square.SetErrorColor(false);
             }
         }
 
@@ -120,7 +126,9 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
             foreach (var square in targetSquares)
                 square.ActivateSquare();
 
-            gameObject.SetActive(false); // Đặt xong thì ẩn khối đi
+            gameObject.SetActive(false);
+
+            Object.FindFirstObjectByType<ShapeStorage>().CheckIfNeedNewShapes();
         }
         else
         {
@@ -131,8 +139,10 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
 
     public void RequestNewShape(ShapeData shapeData)
     {
+        gameObject.SetActive(true);
+        rectTransform.localPosition = startLocalPosition;
         CreateShape(shapeData);
-    }    
+    }
 
     public void CreateShape(ShapeData shapeData)
     {
@@ -149,9 +159,16 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
             square.gameObject.SetActive(false);
         }
 
-        var squareRect =  squareShapeImage.GetComponent<RectTransform>();
-        var moveDistance = new Vector2 (squareRect.rect.width * squareRect.localScale.x, 
-            squareRect.rect.height * squareRect.localScale.y);
+        var squareRect = squareShapeImage.GetComponent<RectTransform>();
+
+        // THÊM GAP = 3 CHO KHỚP VỚI LƯỚI
+        float gapX = 3f;
+        float gapY = 3f;
+
+        var moveDistance = new Vector2(
+            squareRect.rect.width * squareRect.localScale.x + gapX,
+            squareRect.rect.height * squareRect.localScale.y + gapY
+        );
 
         int currentIndexInList = 0;
 
@@ -160,18 +177,18 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
         {
             for (var column = 0; column < shapeData.columns; column++)
             {
-                if (shapeData.board[row].column[column]) 
+                if (shapeData.board[row].column[column])
                 {
                     _currentShape[currentIndexInList].SetActive(true);
-                    _currentShape[currentIndexInList].GetComponent<RectTransform>().localPosition 
-                        = new Vector2(GetXPositionForShapeSquare(shapeData, column, moveDistance), 
-                                    GetYPositionForShapeSquare(shapeData,row, moveDistance));
+                    _currentShape[currentIndexInList].GetComponent<RectTransform>().localPosition
+                        = new Vector2(GetXPositionForShapeSquare(shapeData, column, moveDistance),
+                                      GetYPositionForShapeSquare(shapeData, row, moveDistance));
 
-                    currentIndexInList++;      
+                    currentIndexInList++;
                 }
             }
         }
-    }    
+    }
 
     private float GetXPositionForShapeSquare(ShapeData shapeData, int column, Vector2 moveDistance)
     {

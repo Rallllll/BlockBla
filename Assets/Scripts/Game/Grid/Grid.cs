@@ -146,7 +146,7 @@ public class Grid : MonoBehaviour
             RectTransform closestRect = closestSquare.GetComponent<RectTransform>();
 
             // Bán kính hít: Bằng 70% bề ngang thực tế của ô lưới (Đủ rộng để bù đắp các khe hở Gap)
-            float hitRadius = closestRect.rect.width * closestRect.lossyScale.x * 3f;
+            float hitRadius = closestRect.rect.width * closestRect.lossyScale.x * 0.7f;
 
             if (minDistance <= hitRadius)
             {
