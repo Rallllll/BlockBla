@@ -129,6 +129,7 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
             gameObject.SetActive(false);
 
             Object.FindFirstObjectByType<ShapeStorage>().CheckIfNeedNewShapes();
+            Grid.Instance.CheckIfAnyLineIsCompleted();
         }
         else
         {

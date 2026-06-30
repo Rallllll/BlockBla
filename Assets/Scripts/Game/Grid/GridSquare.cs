@@ -47,4 +47,18 @@ public class GridSquare : MonoBehaviour
     {
         if (redImage != null) redImage.gameObject.SetActive(isError);
     }
+
+    // Tắt hình ảnh khối gạch đang nằm trên ô này
+    public void Deactivate()
+    {
+        // Chú ý: Hãy sửa 'activeImage' thành tên biến hình ảnh gạch của bạn nếu bạn đặt tên khác
+        activeImage.gameObject.SetActive(false);
+    }
+
+    // Xóa trạng thái chiếm chỗ
+    public void ClearOccupied()
+    {
+        isOccupied = false;
+        // Nếu bạn có biến nào khác lưu trạng thái đã đặt gạch thì reset luôn ở đây
+    }
 }

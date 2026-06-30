@@ -155,4 +155,74 @@ public class Grid : MonoBehaviour
         }
         return null;
     }
+
+    public void CheckIfAnyLineIsCompleted()
+    {
+        List<GridSquare> squaresToClear = new List<GridSquare>();
+
+        // 1. Quét HÀNG NGANG
+        for (int row = 0; row < rows; row++)
+        {
+            bool isRowComplete = true;
+            List<GridSquare> currentRowSquares = new List<GridSquare>();
+
+            for (int col = 0; col < columns; col++)
+            {
+                GridSquare square = gridSquaresMatrix[col, row];
+                currentRowSquares.Add(square);
+
+                // Nếu có 1 ô trống -> Hàng này chưa đầy
+                if (square == null || !square.isOccupied)
+                {
+                    isRowComplete = false;
+                    break;
+                }
+            }
+
+            // Nếu hàng đã đầy -> Đưa các ô này vào danh sách "Chờ tử hình"
+            if (isRowComplete)
+            {
+                squaresToClear.AddRange(currentRowSquares);
+            }
+        }
+
+        // 2. Quét CỘT DỌC
+        for (int col = 0; col < columns; col++)
+        {
+            bool isColComplete = true;
+            List<GridSquare> currentColSquares = new List<GridSquare>();
+
+            for (int row = 0; row < rows; row++)
+            {
+                GridSquare square = gridSquaresMatrix[col, row];
+                currentColSquares.Add(square);
+
+                // Nếu có 1 ô trống -> Cột này chưa đầy
+                if (square == null || !square.isOccupied)
+                {
+                    isColComplete = false;
+                    break;
+                }
+            }
+
+            // Nếu cột đã đầy -> Đưa các ô này vào danh sách "Chờ tử hình"
+            if (isColComplete)
+            {
+                squaresToClear.AddRange(currentColSquares);
+            }
+        }
+
+        // 3. XỬ TRẢM (Xóa sạch các ô đã lọt vào danh sách)
+        if (squaresToClear.Count > 0)
+        {
+            foreach (var square in squaresToClear)
+            {
+                square.Deactivate();    // Tắt hình
+                square.ClearOccupied(); // Trả lại chỗ trống
+            }
+
+            // (Sau này bạn có thể gọi hàm Cộng điểm, Phát âm thanh ăn điểm ở đây)
+            Debug.Log("ĂN ĐIỂM! Đã xóa " + (squaresToClear.Count / columns) + " hàng/cột.");
+        }
+    }
 }
