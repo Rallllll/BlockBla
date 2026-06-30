@@ -265,8 +265,7 @@ public class Grid : MonoBehaviour
         // 4. Nếu không thể đặt bất kỳ khối nào -> GAME OVER
         if (!canPlaceAnyShape)
         {
-            Debug.Log("GAME OVER! KHÔNG THỂ ĐẶT THÊM GẠCH!");
-            // (Tập sau sẽ gọi màn hình thua ở đây)
+            GameOver.Instance.ShowGameOver();
         }
     }
 
