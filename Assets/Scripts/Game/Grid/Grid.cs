@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Grid : MonoBehaviour
 {
@@ -221,8 +222,92 @@ public class Grid : MonoBehaviour
                 square.ClearOccupied(); // Trả lại chỗ trống
             }
 
-            // (Sau này bạn có thể gọi hàm Cộng điểm, Phát âm thanh ăn điểm ở đây)
-            Debug.Log("ĂN ĐIỂM! Đã xóa " + (squaresToClear.Count / columns) + " hàng/cột.");
+            // --- THÊM LOGIC TÍNH ĐIỂM Ở ĐÂY ---
+            // Cứ 1 hàng (hoặc 1 cột) bị xóa là có 9 ô. Tính số hàng bị xóa:
+            int linesCleared = squaresToClear.Count / columns;
+
+            // Điểm = 10 điểm cho 1 hàng. Xóa 2 hàng 1 lúc (Combo) thì được x2 (10 * 2 = 20)
+            int scoreToReward = linesCleared * 10;
+
+            // Bắn tín hiệu sang ScoreManager để cộng điểm
+            if (Score.Instance != null)
+            {
+                Score.Instance.AddScore(scoreToReward);
+            }
         }
+        CheckGameOver();
+    }
+
+    // --- THUẬT TOÁN KIỂM TRA GAME OVER (TỐI ƯU HÓA) ---
+    public void CheckGameOver()
+    {
+        // 1. Lấy danh sách các khối gạch đang có trên khay
+        var shapeStorage = Object.FindFirstObjectByType<ShapeStorage>();
+        if (shapeStorage == null) return;
+
+        bool canPlaceAnyShape = false;
+
+        // 2. Thử từng khối gạch trên khay
+        foreach (var shape in shapeStorage.shapeList)
+        {
+            if (!shape.gameObject.activeSelf) continue; // Bỏ qua khối đã đặt rồi
+
+            List<Vector2Int> shapeMap = shape.GetShapeMap();
+
+            // 3. Quét toàn bộ bàn cờ xem có chỗ nào nhét vừa không
+            if (CanShapeFitOnGrid(shapeMap))
+            {
+                canPlaceAnyShape = true;
+                break; // Chỉ cần 1 khối đặt được là CHƯA THUA, thoát vòng lặp luôn
+            }
+        }
+
+        // 4. Nếu không thể đặt bất kỳ khối nào -> GAME OVER
+        if (!canPlaceAnyShape)
+        {
+            Debug.Log("GAME OVER! KHÔNG THỂ ĐẶT THÊM GẠCH!");
+            // (Tập sau sẽ gọi màn hình thua ở đây)
+        }
+    }
+
+    // Hàm đi ướm thử 1 khối gạch vào toàn bộ bàn cờ
+    private bool CanShapeFitOnGrid(List<Vector2Int> shapeMap)
+    {
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < columns; col++)
+            {
+                // Thử đặt khối gạch vào gốc tọa độ (col, row)
+                bool canFitHere = true;
+
+                foreach (var blockOffset in shapeMap)
+                {
+                    int checkCol = col + blockOffset.x;
+                    int checkRow = row + blockOffset.y;
+
+                    // Nếu gạch thò ra ngoài bàn cờ -> Không vừa
+                    if (checkCol >= columns || checkRow >= rows)
+                    {
+                        canFitHere = false;
+                        break;
+                    }
+
+                    // Nếu đụng phải ô đã có gạch -> Không vừa
+                    GridSquare targetSquare = gridSquaresMatrix[checkCol, checkRow];
+                    if (targetSquare == null || targetSquare.isOccupied)
+                    {
+                        canFitHere = false;
+                        break;
+                    }
+                }
+
+                // Nếu quét xong mà vẫn canFitHere == true, tức là NHÉT VỪA MỘT CHỖ!
+                if (canFitHere)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -239,4 +239,22 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
 
         return numbers;
     }
+
+    public List<Vector2Int> GetShapeMap()
+    {
+        List<Vector2Int> map = new List<Vector2Int>();
+        if (CurrentShapeData == null) return map;
+
+        for (int r = 0; r < CurrentShapeData.rows; r++)
+        {
+            for (int c = 0; c < CurrentShapeData.columns; c++)
+            {
+                if (CurrentShapeData.board[r].column[c]) // Nếu ô này có gạch
+                {
+                    map.Add(new Vector2Int(c, r));
+                }
+            }
+        }
+        return map;
+    }
 }
