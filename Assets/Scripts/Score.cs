@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 using TMPro;
+using UnityEngine.UI; // THÊM THƯ VIỆN NÀY ĐỂ ĐIỀU KHIỂN IMAGE
 
 public class Score : MonoBehaviour
 {
     public static Score Instance;
 
     public TextMeshProUGUI scoreText;
-
-    // 1. THÊM BIẾN NÀY ĐỂ CHỨA CHỮ BEST SCORE
     public TextMeshProUGUI bestScoreText;
+
+    // 1. BIẾN ĐỂ CHỨA THANH CHẠY (BAR FILL)
+    public Image bestScoreBarFill;
 
     private int currentScore = 0;
     private int bestScore = 0;
@@ -23,10 +25,12 @@ public class Score : MonoBehaviour
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         UpdateScoreText();
 
-        // 2. GÁN SỐ VÀO CHỮ BEST SCORE KHI VỪA MỞ GAME
+        // Cập nhật thanh Bar ngay lúc mới mở game
+        UpdateBestScoreBar();
+
         if (bestScoreText != null)
         {
-            bestScoreText.text = "Best: " + bestScore.ToString();
+            bestScoreText.text = bestScore.ToString();
         }
     }
 
@@ -34,6 +38,9 @@ public class Score : MonoBehaviour
     {
         currentScore += scoreToAdd;
         UpdateScoreText();
+
+        // Cập nhật thanh Bar mỗi khi ăn điểm
+        UpdateBestScoreBar();
     }
 
     private void UpdateScoreText()
@@ -41,6 +48,27 @@ public class Score : MonoBehaviour
         if (scoreText != null)
         {
             scoreText.text = currentScore.ToString();
+        }
+    }
+
+    // --- HÀM MỚI: TÍNH TOÁN % VÀ ĐỔ ĐẦY THANH BAR ---
+    private void UpdateBestScoreBar()
+    {
+        if (bestScoreBarFill != null)
+        {
+            if (bestScore > 0)
+            {
+                // Công thức: % = Điểm hiện tại / Điểm kỷ lục
+                float fillPercentage = (float)currentScore / bestScore;
+
+                // Mathf.Clamp01 giúp giới hạn giá trị từ 0 đến 1 (để thanh không bị trào ra ngoài khi phá kỷ lục)
+                bestScoreBarFill.fillAmount = Mathf.Clamp01(fillPercentage);
+            }
+            else
+            {
+                // Nếu chưa có kỷ lục nào (lần đầu chơi), cho thanh = 0
+                bestScoreBarFill.fillAmount = 0f;
+            }
         }
     }
 
@@ -52,16 +80,16 @@ public class Score : MonoBehaviour
             PlayerPrefs.SetInt("BestScore", bestScore);
             PlayerPrefs.Save();
 
-            // Tự động cập nhật lại số trên màn hình ngay lúc phá kỷ lục
             if (bestScoreText != null)
             {
-                bestScoreText.text = "Best: " + bestScore.ToString();
+                bestScoreText.text = bestScore.ToString();
             }
 
             return true;
         }
         return false;
     }
+
     public int GetCurrentScore()
     {
         return currentScore;
