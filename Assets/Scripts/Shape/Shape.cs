@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHandler
 {
@@ -186,6 +187,19 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
                                       GetYPositionForShapeSquare(shapeData, row, moveDistance));
 
                     currentIndexInList++;
+                }
+            }
+        }
+        if (Score.CurrentBlockColor != null)
+        {
+            // Quét qua danh sách các ô gạch con của khối này
+            foreach (var square in _currentShape)
+            {
+                Image squareImage = square.GetComponent<Image>();
+                if (squareImage != null)
+                {
+                    // Lấy màu hiện tại từ Score đắp sang
+                    squareImage.sprite = Score.CurrentBlockColor;
                 }
             }
         }
