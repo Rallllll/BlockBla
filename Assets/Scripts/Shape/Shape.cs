@@ -124,8 +124,19 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
 
         if (canPlace)
         {
-            foreach (var square in targetSquares)
-                square.ActivateSquare();
+            // THAY THẾ LỆNH GỌI CŨ BẰNG VÒNG LẶP NÀY ĐỂ TRUYỀN ĐÚNG ẢNH CỦA KHỐI GẠCH:
+            for (int i = 0; i < targetSquares.Count; i++)
+            {
+                // Lấy ảnh của viên gạch con trong khối đang kéo
+                Sprite currentBrickSprite = null;
+                if (i < _currentShape.Count && _currentShape[i].GetComponent<Image>() != null)
+                {
+                    currentBrickSprite = _currentShape[i].GetComponent<Image>().sprite;
+                }
+
+                // Nhét ảnh đó truyền sang cho ô lưới!
+                targetSquares[i].ActivateSquare(currentBrickSprite);
+            }
 
             gameObject.SetActive(false);
 

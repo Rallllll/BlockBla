@@ -216,20 +216,29 @@ public class Grid : MonoBehaviour
         // 3. XỬ TRẢM (Xóa sạch các ô đã lọt vào danh sách)
         if (squaresToClear.Count > 0)
         {
+            // --- TẬP 23: LƯU LẠI CÁC MÀU GẠCH TRƯỚC KHI XÓA ---
+            List<Sprite> clearedColors = new List<Sprite>();
+            foreach (var square in squaresToClear)
+            {
+                // Lấy ảnh của ô gạch hiện tại (Nếu trong GridSquare bạn đặt tên biến khác normalSprite thì đổi tên nhé)
+                Sprite colorSprite = square.normalImage.sprite;
+                if (colorSprite != null && !clearedColors.Contains(colorSprite))
+                {
+                    clearedColors.Add(colorSprite);
+                }
+            }
+
+            // Xóa gạch cũ của bạn (GIỮ NGUYÊN 100%)
             foreach (var square in squaresToClear)
             {
                 square.Deactivate();    // Tắt hình
                 square.ClearOccupied(); // Trả lại chỗ trống
             }
 
-            // --- THÊM LOGIC TÍNH ĐIỂM Ở ĐÂY ---
-            // Cứ 1 hàng (hoặc 1 cột) bị xóa là có 9 ô. Tính số hàng bị xóa:
+            // --- THÊM LOGIC TÍNH ĐIỂM Ở ĐÂY (GIỮ NGUYÊN 100%) ---
             int linesCleared = squaresToClear.Count / columns;
-
-            // Điểm = 10 điểm cho 1 hàng. Xóa 2 hàng 1 lúc (Combo) thì được x2 (10 * 2 = 20)
             int scoreToReward = linesCleared * 10;
 
-            // Bắn tín hiệu sang ScoreManager để cộng điểm
             if (Score.Instance != null)
             {
                 Score.Instance.AddScore(scoreToReward);
@@ -239,6 +248,9 @@ public class Grid : MonoBehaviour
             {
                 Combo.Instance.ShowRandomComboText();
             }
+
+            // --- TẬP 23: GỌI HÀM KIỂM TRA TỰYỆT CHỦNG MÀU ---
+            CheckColorClearBonus(clearedColors);
         }
         CheckGameOver();
     }
@@ -313,5 +325,32 @@ public class Grid : MonoBehaviour
             }
         }
         return false;
+    }
+    private void CheckColorClearBonus(List<Sprite> recentlyClearedColors)
+    {
+        // Nếu không có BonusManager trên scene thì bỏ qua để không báo lỗi đỏ
+        if (Bonus.Instance == null || recentlyClearedColors.Count == 0) return;
+
+        foreach (Sprite colorToCheck in recentlyClearedColors)
+        {
+            bool isColorStillOnBoard = false;
+
+            // Quét ma trận 64 ô xem màu này còn tồn tại không
+            foreach (var square in gridSquaresMatrix)
+            {
+                if (square != null && square.isOccupied && square.normalImage.sprite == colorToCheck)
+                {
+                    isColorStillOnBoard = true;
+                    break; // Vẫn còn gạch màu này -> Dừng quét ngay
+                }
+            }
+
+            // Nếu màu này đã bị xóa sạch hoàn toàn khỏi bàn cờ -> Kích hoạt Bonus!
+            if (!isColorStillOnBoard)
+            {
+                Bonus.Instance.TriggerColorClearBonus(colorToCheck);
+                break; // Thưởng 1 lần trong 1 lượt đặt là đủ
+            }
+        }
     }
 }

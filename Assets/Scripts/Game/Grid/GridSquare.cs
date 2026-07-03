@@ -36,11 +36,19 @@ public class GridSquare : MonoBehaviour
         }
     }
 
-    public void ActivateSquare()
+    public void ActivateSquare(Sprite brickSprite = null)
     {
         isOccupied = true;
         if (hoverImage != null) hoverImage.gameObject.SetActive(false);
-        if (activeImage != null) activeImage.gameObject.SetActive(true);
+        if (activeImage != null)
+        {
+            // NẾU CÓ TRUYỀN ẢNH VÀO -> ỐP ẢNH MỚI ĐÈ LÊN MÀU XANH LÁ MẶC ĐỊNH
+            if (brickSprite != null)
+            {
+                activeImage.sprite = brickSprite;
+            }
+            activeImage.gameObject.SetActive(true);
+        }
     }
 
     public void SetErrorColor(bool isError)
