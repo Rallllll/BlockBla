@@ -137,10 +137,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 23
-        width: 1517
+        width: 4411
         height: 621
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -153,55 +153,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: You Rock_1
-      rect:
-        serializedVersion: 2
-        x: 1648
-        y: 22
-        width: 1958
-        height: 645
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 91964c6af13278ed0800000000000000
-      internalID: -2411920456584763111
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: You Rock_2
-      rect:
-        serializedVersion: 2
-        x: 3719
-        y: 0
-        width: 692
-        height: 674
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fdf60953075820040800000000000000
-      internalID: 4612395685362298847
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 0a1e59134bf0bc340808c31b9be675a7
     internalID: 0
     vertices: []
     indices: 

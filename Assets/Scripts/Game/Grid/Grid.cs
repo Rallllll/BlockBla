@@ -234,6 +234,11 @@ public class Grid : MonoBehaviour
             {
                 Score.Instance.AddScore(scoreToReward);
             }
+
+            if (linesCleared >= 2 && Combo.Instance != null)
+            {
+                Combo.Instance.ShowRandomComboText();
+            }
         }
         CheckGameOver();
     }

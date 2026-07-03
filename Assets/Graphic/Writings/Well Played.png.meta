@@ -140,10 +140,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 23
-        width: 1967
+        width: 5191
         height: 637
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -156,77 +156,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: Well Played_1
-      rect:
-        serializedVersion: 2
-        x: 2097
-        y: 27
-        width: 1393
-        height: 640
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4eb2fa897ce5298a0800000000000000
-      internalID: -6299868717384782876
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Well Played_2
-      rect:
-        serializedVersion: 2
-        x: 3365
-        y: 23
-        width: 1451
-        height: 637
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3c00a6956dc76d9f0800000000000000
-      internalID: -444030253184450365
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Well Played_3
-      rect:
-        serializedVersion: 2
-        x: 4950
-        y: 0
-        width: 241
-        height: 674
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 604b323bddfcc32a0800000000000000
-      internalID: -6756296789862403066
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 38753746eb7593745a4cfd2bd479c89f
     internalID: 0
     vertices: []
     indices: 
