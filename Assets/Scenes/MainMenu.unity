@@ -202,7 +202,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3027069}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3027071}
+        m_TargetAssemblyTypeName: SoundToggle, Assembly-CSharp
+        m_MethodName: OnToggleClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3027069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,7 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundToggle
   soundType: 0
   handleIcon: {fileID: 731236307}
-  backgroundImage: {fileID: 731236308}
+  backgroundImage: {fileID: 3027069}
   backgroundOn: {fileID: 6783617639331411701, guid: 6b6883efe666f4741846b0f18aa88a78, type: 3}
   backgroundOff: {fileID: -5245886550618905832, guid: 418754395adfdfb448423645ab6640e8, type: 3}
   posX_On: -44
@@ -335,6 +347,164 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &444694637
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 444694640}
+  - component: {fileID: 444694639}
+  - component: {fileID: 444694638}
+  m_Layer: 0
+  m_Name: SoundEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &444694638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444694637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3b01237368c0b444b76b9630b4cdbda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundEffect
+  sfxSource: {fileID: 444694639}
+  clickClip: {fileID: 8300000, guid: d9cfc0f242ae87548bcf2fdfe4d419a8, type: 3}
+  endGameClip: {fileID: 8300000, guid: 19305dddcd7ff68438ff905eb729f094, type: 3}
+  newBestClip: {fileID: 8300000, guid: 90d209b143276e24b927644ca119da6e, type: 3}
+  praiseClips:
+  - {fileID: 8300000, guid: 48a8a5066800daf409afdbdbd2ba41c6, type: 3}
+  - {fileID: 8300000, guid: 51a1eea21610aa542bc825dfc61dbcbe, type: 3}
+  - {fileID: 8300000, guid: 2ae58b64ff3abb744b2517d0ef44cb9c, type: 3}
+  - {fileID: 8300000, guid: 5fb774f35394d8e4792984b239a7b6cd, type: 3}
+  - {fileID: 8300000, guid: 3fd16b8be72923341a336e6669a0c86e, type: 3}
+  - {fileID: 8300000, guid: b9e4a8c3593987e4a8f6be7165b446c6, type: 3}
+  - {fileID: 8300000, guid: fd9423935c83cec4a9e5913fa75929c6, type: 3}
+  - {fileID: 8300000, guid: 90e6404daf8893945aa8ffab4463a4f3, type: 3}
+  - {fileID: 8300000, guid: 5f89db11711793d409b6bdd0849e49b8, type: 3}
+  - {fileID: 8300000, guid: 2227c53eb4dc0ff43ac55b33c8a7e6df, type: 3}
+  - {fileID: 8300000, guid: edf2768215dc5f540801845fd82377e3, type: 3}
+--- !u!82 &444694639
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444694637}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &444694640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444694637}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.06245, y: -0.6907, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -714,8 +884,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 39, y: 0}
-  m_SizeDelta: {x: 139, y: 139}
+  m_AnchoredPosition: {x: 39, y: 4.93}
+  m_SizeDelta: {x: 139, y: 129.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &731236308
 MonoBehaviour:
@@ -1043,6 +1213,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1163098268}
   - component: {fileID: 1163098267}
+  - component: {fileID: 1163098269}
   m_Layer: 0
   m_Name: Sound
   m_TagString: Untagged
@@ -1063,7 +1234,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: f3c8090881990d8489a356d6c273af89, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.125
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1162,6 +1333,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1163098269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163098266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 378ae218e8dbc3c478c91c30378a8e43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BackgroundSound
+  bgmSource: {fileID: 1163098267}
+  backgroundMusic: {fileID: 8300000, guid: f3c8090881990d8489a356d6c273af89, type: 3}
 --- !u!1 &1196372934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1497,6 +1682,7 @@ GameObject:
   - component: {fileID: 1630719025}
   - component: {fileID: 1630719024}
   - component: {fileID: 1630719026}
+  - component: {fileID: 1630719027}
   m_Layer: 5
   m_Name: SettingInside
   m_TagString: Untagged
@@ -1584,6 +1770,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1630719027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630719022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
+  m_ShowMaskGraphic: 1
 --- !u!1 &1714466676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1950,3 +2149,4 @@ SceneRoots:
   - {fileID: 574963098}
   - {fileID: 220964828}
   - {fileID: 1163098268}
+  - {fileID: 444694640}

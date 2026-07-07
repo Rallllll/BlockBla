@@ -6,6 +6,8 @@ public class BackgroundSound : MonoBehaviour
     public AudioSource bgmSource;
     public AudioClip backgroundMusic;
 
+    private bool isMusicOn = true;
+
     private void Awake()
     {
         // --- ĐÂY LÀ ĐOẠN GIÚP NHẠC BẤT TỬ ---
@@ -33,5 +35,18 @@ public class BackgroundSound : MonoBehaviour
             bgmSource.loop = true; // Bắt buộc lặp lại
             bgmSource.Play();
         }
+    }
+
+    public void ToggleMusic(bool isOn)
+    {
+        isMusicOn = isOn;
+        if (bgmSource != null)
+        {
+            bgmSource.mute = !isMusicOn; // Tắt/Bật tiếng
+        }
+
+        // Lưu vào bộ nhớ máy
+        PlayerPrefs.SetInt("SETTING_MUSIC", isMusicOn ? 1 : 0);
+        PlayerPrefs.Save();
     }
 }

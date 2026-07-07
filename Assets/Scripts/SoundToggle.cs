@@ -4,7 +4,7 @@ using System.Collections;
 
 public class SoundToggle : MonoBehaviour
 {
-    public enum SoundType { Music, VFX }
+    public enum SoundType { Music, SFX }
     [Header("Loại âm thanh của nút này")]
     public SoundType soundType;
 
@@ -27,7 +27,7 @@ public class SoundToggle : MonoBehaviour
     private void Start()
     {
         // 1. Đọc trạng thái đã lưu (Mặc định lần đầu chơi là BẬT - true)
-        string saveKey = (soundType == SoundType.Music) ? "SETTING_MUSIC" : "SETTING_VFX";
+        string saveKey = (soundType == SoundType.Music) ? "SETTING_MUSIC" : "SETTING_SFX";
         isOn = PlayerPrefs.GetInt(saveKey, 1) == 1;
 
         // 2. Cập nhật giao diện ngay lập tức mà không cần chạy animation lướt
@@ -40,10 +40,14 @@ public class SoundToggle : MonoBehaviour
     // Hàm này sẽ được gắn vào sự kiện OnClick() của chính Button này
     public void OnToggleClicked()
     {
+        if (SoundEffect.Instance != null)
+        {
+            SoundEffect.Instance.PlayClip();
+        }
         isOn = !isOn; // Đảo trạng thái (Đang Bật -> Tắt, Đang Tắt -> Bật)
 
         // Lưu lại vào bộ nhớ máy
-        string saveKey = (soundType == SoundType.Music) ? "SETTING_MUSIC" : "SETTING_VFX";
+        string saveKey = (soundType == SoundType.Music) ? "SETTING_MUSIC" : "SETTING_SFX";
         PlayerPrefs.SetInt(saveKey, isOn ? 1 : 0);
         PlayerPrefs.Save();
 
@@ -107,17 +111,19 @@ public class SoundToggle : MonoBehaviour
     {
         if (soundType == SoundType.Music)
         {
-            // NẾU LÀ NHẠC NỀN: Tìm nguồn phát nhạc và Tắt/Bật Mute
-            // (Ví dụ bạn có thẻ AudioSource nhạc nền ngoài Scene thì quản lý ở đây)
-            AudioListener.pause = !isOn; // Xài tạm lệnh này nếu bạn muốn tắt toàn bộ âm thanh
-
-            // HOẶC chuẩn nhất: gọi sang SoundManager của bạn
-            // if (SoundManager.Instance != null) SoundManager.Instance.ToggleMusic(isOn);
+            // Gọi sang script BackgroundSound của bạn để Tắt/Bật nhạc!
+            if (BackgroundSound.Instance != null)
+            {
+                BackgroundSound.Instance.ToggleMusic(isOn);
+            }
         }
         else
         {
-            // NẾU LÀ VFX:
-            // if (SoundManager.Instance != null) SoundManager.Instance.ToggleVFX(isOn);
+            // Gọi sang script SoundEffect để Tắt/Bật SFX!
+            if (SoundEffect.Instance != null)
+            {
+                SoundEffect.Instance.ToggleVFX(isOn);
+            }
         }
     }
 }

@@ -15,6 +15,10 @@ public class Setting : MonoBehaviour
 
     public void ToggleSettings()
     {
+        if (SoundEffect.Instance != null)
+        {
+            SoundEffect.Instance.PlayClick();
+        }
         // 1. NẾU ANIMATION ĐANG CHẠY -> TỪ CHỐI NHẬN LỆNH BẤM (Chống spam click)
         if (isAnimating || settingsPanel == null) return;
 

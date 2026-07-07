@@ -16,6 +16,10 @@ public class Menu : MonoBehaviour
 
     public void LoadScene(string name)
     {
+        if (SoundEffect.Instance != null)
+        {
+            SoundEffect.Instance.PlayClick();
+        }
         SceneManager.LoadScene(name);
     }
 }
