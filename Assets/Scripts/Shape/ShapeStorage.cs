@@ -34,6 +34,8 @@ public class ShapeStorage : MonoBehaviour
         // 2. Nếu khay trống trơn -> Đẻ 3 khối mới
         if (isTrayEmpty)
         {
+            if (Score.Instance != null) Score.Instance.ChangeToNextColor();
+
             foreach (var shape in shapeList)
             {
                 ShapeData randomData = shapeData[Random.Range(0, shapeData.Count)];

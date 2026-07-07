@@ -4423,7 +4423,6 @@ MonoBehaviour:
   - {fileID: 6286595657586805340, guid: 1f60af0b48a40f446b60207b0e45a75a, type: 3}
   - {fileID: -1629362560720184693, guid: 4cc66b8be414c2f4fa6a280847febed1, type: 3}
   - {fileID: 6358040702757662528, guid: 7e70bb03984867c4ca927fcb13e2a96e, type: 3}
-  scoreThreshold: 10
 --- !u!1 &1634982933 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6594068467777055841, guid: 8656f7c2274ce734eaf9f2f1fca68ff7, type: 3}

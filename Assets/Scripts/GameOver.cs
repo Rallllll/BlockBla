@@ -28,6 +28,15 @@ public class GameOver : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        // Cứ đang chơi game mà gõ phím B trên bàn phím là tự động test!
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ShowGameOver();
+        }
+    }
+
     public void ShowGameOver()
     {
         if (gameOverPopup != null)
@@ -48,12 +57,16 @@ public class GameOver : MonoBehaviour
             // 4. Tắt/Bật các nhóm chữ tuyệt đối (Không bao giờ bị hiện cả hai)
             if (isNewRecord)
             {
+                if (SoundEffect.Instance != null) SoundEffect.Instance.PlayNewBest();
+
                 // Nếu phá kỷ lục: Bật chữ New Best Score, Tắt chữ Game Over thường
                 if (newBestScoreGroup != null) newBestScoreGroup.SetActive(true);
                 if (normalGameOverGroup != null) normalGameOverGroup.SetActive(false);
             }
             else
             {
+                if (SoundEffect.Instance != null) SoundEffect.Instance.PlayEndGame();
+
                 // Nếu thua bình thường: Tắt chữ New Best Score, Bật chữ Game Over thường
                 if (newBestScoreGroup != null) newBestScoreGroup.SetActive(false);
                 if (normalGameOverGroup != null) normalGameOverGroup.SetActive(true);

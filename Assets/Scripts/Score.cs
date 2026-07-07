@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
-using UnityEngine.UI; // THÊM THƯ VIỆN NÀY ĐỂ ĐIỀU KHIỂN IMAGE
+using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
@@ -9,6 +9,8 @@ public class Score : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI bestScoreText;
 
+    private bool hasPlayedNewBest = false;
+
     // 1. BIẾN ĐỂ CHỨA THANH CHẠY (BAR FILL)
     public Image bestScoreBarFill;
 
@@ -16,14 +18,16 @@ public class Score : MonoBehaviour
     private int bestScore = 0;
 
     // ========================================================
-    // THÊM: CÁC BIẾN QUẢN LÝ ĐỔI MÀU GẠCH (TẬP 20 & 21)
+    // QUẢN LÝ ĐỔI MÀU GẠCH THEO LƯỢT (HẾT 3 KHỐI LÀ ĐỔI)
     // ========================================================
-    [Header("Level Up Block Colors")]
+    [Header("Block Colors List")]
     public Sprite[] blockColors;         // Danh sách chứa các hình ảnh màu gạch khác nhau
-    public int scoreThreshold = 100;     // Cố định mốc điểm để đổi màu (Ví dụ: mỗi 100 điểm)
 
     // Biến static toàn cục giúp file Shape.cs có thể truy cập trực tiếp cực nhanh
     public static Sprite CurrentBlockColor;
+
+    // THÊM: Biến ghi nhớ số thứ tự màu đang dùng
+    private int currentColorIndex = 0;
 
     private void Awake()
     {
@@ -34,15 +38,14 @@ public class Score : MonoBehaviour
     {
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
 
-        // KHỞI TẠO MÀU BAN ĐẦU: Khi vừa vào game, mặc định dùng màu đầu tiên (phần tử số 0)
+        // KHỞI TẠO MÀU BAN ĐẦU: Khi vừa vào game, dùng màu đầu tiên (phần tử số 0)
         if (blockColors != null && blockColors.Length > 0)
         {
+            currentColorIndex = 0;
             CurrentBlockColor = blockColors[0];
         }
 
         UpdateScoreText();
-
-        // Cập nhật thanh Bar ngay lúc mới mở game
         UpdateBestScoreBar();
 
         if (bestScoreText != null)
@@ -54,30 +57,25 @@ public class Score : MonoBehaviour
     public void AddScore(int scoreToAdd)
     {
         currentScore += scoreToAdd;
+
+        if (SoundEffect.Instance != null) SoundEffect.Instance.PlayAddScore();
+
         UpdateScoreText();
-
-        // Cập nhật thanh Bar mỗi khi ăn điểm
         UpdateBestScoreBar();
-
-        // KIỂM TRA ĐỔI MÀU: Mỗi lần điểm tăng lên, tự động tính toán xem đã đến mốc đổi màu chưa
-        CheckLevelUpColor();
     }
 
     // ========================================================
-    // THÊM HÀM: TÍNH TOÁN CẤP ĐỘ MÀU DỰA TRÊN ĐIỂM SỐ
+    // THÊM HÀM MỚI: GỌI HÀM NÀY KHI HẾT 3 KHỐI GẠCH ĐỂ ĐỔI MÀU
     // ========================================================
-    private void CheckLevelUpColor()
+    public void ChangeToNextColor()
     {
         if (blockColors == null || blockColors.Length == 0) return;
 
-        // Chia lấy nguyên để xác định đang ở cấp độ màu mấy (Ví dụ: 250 điểm / 100 = Cấp 2)
-        int currentLevel = currentScore / scoreThreshold;
-
-        // Dùng phép chia lấy dư (%) để vòng lặp màu không bị lỗi vượt quá số lượng ảnh bạn có
-        int colorIndex = currentLevel % blockColors.Length;
+        // Chuyển sang số thứ tự tiếp theo, nếu vượt quá danh sách thì quay lại số 0 (Dùng phép chia dư %)
+        currentColorIndex = (currentColorIndex + 1) % blockColors.Length;
 
         // Cập nhật bức ảnh màu gạch hiện tại
-        CurrentBlockColor = blockColors[colorIndex];
+        CurrentBlockColor = blockColors[currentColorIndex];
     }
 
     private void UpdateScoreText()
@@ -88,22 +86,17 @@ public class Score : MonoBehaviour
         }
     }
 
-    // --- HÀM MỚI: TÍNH TOÁN % VÀ ĐỔ ĐẦY THANH BAR ---
     private void UpdateBestScoreBar()
     {
         if (bestScoreBarFill != null)
         {
             if (bestScore > 0)
             {
-                // Công thức: % = Điểm hiện tại / Điểm kỷ lục
                 float fillPercentage = (float)currentScore / bestScore;
-
-                // Mathf.Clamp01 giúp giới hạn giá trị từ 0 đến 1 (để thanh không bị trào ra ngoài khi phá kỷ lục)
                 bestScoreBarFill.fillAmount = Mathf.Clamp01(fillPercentage);
             }
             else
             {
-                // Nếu chưa có kỷ lục nào (lần đầu chơi), cho thanh = 0
                 bestScoreBarFill.fillAmount = 0f;
             }
         }

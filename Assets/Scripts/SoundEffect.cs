@@ -11,9 +11,13 @@ public class SoundEffect : MonoBehaviour
     [Header("--- KHO ÂM THANH HIỆU ỨNG ---")]
     public AudioClip clickClip;       // Tiếng bấm nút (Play, Setting, Out...)
     public AudioClip toggleClip;
+    public AudioClip bonusClip;
     public AudioClip endGameClip;     // Tiếng thua game (Game Over)
     public AudioClip newBestClip;     // Tiếng phá kỷ lục (New Best)
     public AudioClip[] praiseClips;   // Danh sách từ khen (Good, Excellent, Amazing...)
+    public AudioClip placeBlockClip; // Tiếng đặt gạch xuống bàn cờ (Tiếng bộp / gỗ / pop)
+    public AudioClip addScoreClip;   // Tiếng cộng điểm (Tiếng ping / coin / tinh)\
+    public AudioClip errorClip;
 
     private bool isVFXOn = true;      // Biến ghi nhớ trạng thái Bật/Tắt
 
@@ -58,13 +62,23 @@ public class SoundEffect : MonoBehaviour
 
     public void PlayClip() => PlayClip(toggleClip);
 
-    // 4. Gọi khi ăn điểm/combo (Đọc ngẫu nhiên 1 từ khen ngợi)
-    public void PlayRandomPraise()
-    {
-        if (praiseClips == null || praiseClips.Length == 0) return;
+    public void PlayBonus() => PlayClip(bonusClip);
 
-        int randomIndex = Random.Range(0, praiseClips.Length);
-        PlayClip(praiseClips[randomIndex]);
+    public void PlayPlaceBlock() => PlayClip(placeBlockClip);
+    public void PlayAddScore() => PlayClip(addScoreClip);
+
+    public void PlayError() => PlayClip(errorClip);
+    // 4. Gọi khi ăn điểm/combo (Đọc ngẫu nhiên 1 từ khen ngợi)
+    public void PlayPraiseByIndex(int index)
+    {
+        // Nếu tắt VFX, hoặc loa trống, hoặc danh sách tiếng trống -> Bỏ qua
+        if (!isVFXOn || sfxSource == null || praiseClips == null || praiseClips.Length == 0) return;
+
+        // Kiểm tra bảo vệ: Nếu cái index truyền sang hợp lệ (nằm trong mảng) thì mới phát
+        if (index >= 0 && index < praiseClips.Length)
+        {
+            sfxSource.PlayOneShot(praiseClips[index]);
+        }
     }
 
     // --- HÀM CÔNG TẮC (Nối với nút gạt VFX ngoài Settings) ---

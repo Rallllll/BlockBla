@@ -124,17 +124,20 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
 
         if (canPlace)
         {
+            // ===============================================================
+            // THÊM DÒNG NÀY: PHÁT TIẾNG ĐẶT GẠCH THÀNH CÔNG (CẠCH/BỘP)
+            // ===============================================================
+            if (SoundEffect.Instance != null) SoundEffect.Instance.PlayPlaceBlock();
+
             // THAY THẾ LỆNH GỌI CŨ BẰNG VÒNG LẶP NÀY ĐỂ TRUYỀN ĐÚNG ẢNH CỦA KHỐI GẠCH:
             for (int i = 0; i < targetSquares.Count; i++)
             {
-                // Lấy ảnh của viên gạch con trong khối đang kéo
                 Sprite currentBrickSprite = null;
                 if (i < _currentShape.Count && _currentShape[i].GetComponent<Image>() != null)
                 {
                     currentBrickSprite = _currentShape[i].GetComponent<Image>().sprite;
                 }
 
-                // Nhét ảnh đó truyền sang cho ô lưới!
                 targetSquares[i].ActivateSquare(currentBrickSprite);
             }
 
@@ -145,6 +148,11 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
         }
         else
         {
+            // ===============================================================
+            // THÊM DÒNG NÀY: PHÁT TIẾNG LỖI KHI ĐẶT SAI VỊ TRÍ!
+            // ===============================================================
+            if (SoundEffect.Instance != null) SoundEffect.Instance.PlayError();
+
             // Thất bại: Bay về đúng vị trí gốc
             rectTransform.localPosition = startLocalPosition;
         }
