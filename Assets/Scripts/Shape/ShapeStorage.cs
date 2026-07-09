@@ -34,6 +34,9 @@ public class ShapeStorage : MonoBehaviour
         // 2. Nếu khay trống trơn -> Đẻ 3 khối mới
         if (isTrayEmpty)
         {
+            // 👉 THÊM DÒNG NÀY VÀO ĐÂY: Khóa Undo ngay khi chuẩn bị ra 3 viên mới!
+            if (Grid.Instance != null) Grid.Instance.DisableUndo();
+
             if (Score.Instance != null) Score.Instance.ChangeToNextColor();
 
             foreach (var shape in shapeList)
@@ -42,5 +45,17 @@ public class ShapeStorage : MonoBehaviour
                 shape.RequestNewShape(randomData);
             }
         }
+    }
+    public void Logic_RefreshShapes()
+    {
+        foreach (var shape in shapeList)
+        {
+            // Lấy ngẫu nhiên 1 mẫu gạch mới từ danh sách data
+            var shapeIndex = UnityEngine.Random.Range(0, shapeData.Count);
+
+            // Gọi lại chính hàm có sẵn của bạn: Tự bốc gạch mới và đưa về khay!
+            shape.RequestNewShape(shapeData[shapeIndex]);
+        }
+        Debug.Log("Đã Refresh: Đổi 3 viên gạch mới dưới khay!");
     }
 }

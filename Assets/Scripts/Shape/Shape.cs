@@ -141,6 +141,8 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
                 targetSquares[i].ActivateSquare(currentBrickSprite);
             }
 
+            Grid.Instance.SaveUndoData(this, new List<GridSquare>(targetSquares));
+
             gameObject.SetActive(false);
 
             Object.FindFirstObjectByType<ShapeStorage>().CheckIfNeedNewShapes();
@@ -289,5 +291,11 @@ public class Shape : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragH
             }
         }
         return map;
+    }
+    public void RestoreShapeToTray()
+    {
+        gameObject.SetActive(true); // Bật lại khối gạch
+        rectTransform.localPosition = startLocalPosition; // Đưa nó bay về lại khay
+        // ❌ Không gọi CreateShape ở đây để giữ nguyên màu sắc gốc của viên gạch!
     }
 }

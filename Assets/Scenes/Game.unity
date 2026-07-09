@@ -227,7 +227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &206132122
 RectTransform:
   m_ObjectHideFlags: 0
@@ -294,13 +294,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1855,7 +1855,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &562689873
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1922,13 +1922,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2915,7 +2915,7 @@ GameObject:
   - component: {fileID: 798805237}
   - component: {fileID: 798805236}
   m_Layer: 5
-  m_Name: Clear
+  m_Name: Refresh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2984,7 +2984,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 798805237}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 879172717}
+        m_TargetAssemblyTypeName: Help, Assembly-CSharp
+        m_MethodName: OnClick_RefreshBooster
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &798805237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3005,7 +3017,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 5251744956290624300, guid: fcd5a976a2724474ab4155b8d1dbb366, type: 3}
+  m_Sprite: {fileID: 5417023964896865715, guid: 80e963e5678e38849b5cca4ee3320087, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3334,6 +3346,60 @@ MonoBehaviour:
   - {fileID: 713527498}
   - {fileID: 1483912843}
   - {fileID: 1346000791}
+--- !u!1 &879172716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 879172718}
+  - component: {fileID: 879172717}
+  m_Layer: 0
+  m_Name: Help
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &879172717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879172716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34da3385d3b060c489e12828d5eb9019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Help
+  shapeStorage: {fileID: 225110119}
+  refreshCount: 10
+  undoCount: 3
+  bombCount: 2
+  refreshText: {fileID: 562689874}
+  undoText: {fileID: 206132123}
+  bombText: {fileID: 1081486051}
+  refreshButton: {fileID: 798805236}
+  undoButton: {fileID: 1764280294}
+  bombButton: {fileID: 1435952997}
+--- !u!4 &879172718
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879172716}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.19472, y: -1.39329, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &952989963
 GameObject:
   m_ObjectHideFlags: 0
@@ -3820,7 +3886,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1081486050
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3887,13 +3953,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -4360,6 +4426,7 @@ MonoBehaviour:
   startPosition: {x: -435, y: 442}
   squareScale: 0.9
   everySquareOffset: 0.5
+  isBombMode: 0
 --- !u!1 &1323350958
 GameObject:
   m_ObjectHideFlags: 0
@@ -4952,7 +5019,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1435952998}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 879172717}
+        m_TargetAssemblyTypeName: HelpBoosterManager, Assembly-CSharp
+        m_MethodName: OnClick_BombBooster
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1435952998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5973,7 +6052,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1764280295}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 879172717}
+        m_TargetAssemblyTypeName: Help, Assembly-CSharp
+        m_MethodName: OnClick_UndoBooster
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1764280295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8004,3 +8095,4 @@ SceneRoots:
   - {fileID: 1323350962}
   - {fileID: 784674063}
   - {fileID: 290199016}
+  - {fileID: 879172718}

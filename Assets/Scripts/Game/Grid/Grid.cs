@@ -23,6 +23,12 @@ public class Grid : MonoBehaviour
     public GridSquare[,] gridSquaresMatrix;
     private Canvas canvas;
 
+    [Header("Trợ giúp - Undo & Bom")]
+    public bool isBombMode = false; // Biến bật/tắt chế độ Bom
+    private Shape lastPlacedShape;
+    private List<GridSquare> lastPlacedSquares = new List<GridSquare>();
+    private bool canUndo = false;
+
     private void Awake()
     {
         Instance = this;
@@ -216,6 +222,7 @@ public class Grid : MonoBehaviour
         // 3. XỬ TRẢM (Xóa sạch các ô đã lọt vào danh sách)
         if (squaresToClear.Count > 0)
         {
+            canUndo = false;
             // --- TẬP 23: LƯU LẠI CÁC MÀU GẠCH TRƯỚC KHI XÓA ---
             List<Sprite> clearedColors = new List<Sprite>();
             foreach (var square in squaresToClear)
@@ -352,5 +359,80 @@ public class Grid : MonoBehaviour
                 break; // Thưởng 1 lần trong 1 lượt đặt là đủ
             }
         }
+    }
+    public void SaveUndoData(Shape shape, List<GridSquare> squares)
+    {
+        lastPlacedShape = shape;
+        lastPlacedSquares = squares;
+        canUndo = true;
+    }
+
+    // Hàm thực thi khi bấm nút Undo trên UI
+    public bool Logic_UndoLastMove()
+    {
+        // ❌ Nếu không được phép dùng -> Trả về false ngay lập tức!
+        if (!canUndo || lastPlacedShape == null)
+        {
+            Debug.Log("Không thể Undo ở lượt này!");
+            return false;
+        }
+
+        // 1. Dọn sạch gạch khỏi ô lưới (Code cũ của bạn)
+        foreach (var square in lastPlacedSquares)
+        {
+            if (square != null)
+            {
+                square.Deactivate();
+                square.ClearOccupied();
+            }
+        }
+
+        // 2. Khôi phục viên gạch về khay giữ nguyên màu
+        lastPlacedShape.RestoreShapeToTray();
+
+        // Tắt khóa để không cho bấm liên tiếp
+        canUndo = false;
+
+        Debug.Log("Undo thành công!");
+        return true; //  BÁO CÁO: ĐÃ UNDO THÀNH CÔNG!
+    }
+
+    // --- THÊM VÀO DƯỚI CÙNG TRONG SCRIPT Grid.cs ---
+    public void Logic_ExplodeClearAll_Immediate()
+    {
+        // 1. Phát tiếng nổ (Nếu có)
+        //if (SoundEffect.Instance != null) SoundEffect.Instance.PlayBombSound();
+
+        int totalBlocksCleared = 0;
+
+        // 2. Quét toàn bộ ma trận 64 ô lưới
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < columns; c++)
+            {
+                GridSquare targetSq = gridSquaresMatrix[c, r];
+
+                // Nếu ô đó đang có gạch -> Xóa sạch!
+                if (targetSq != null && targetSq.isOccupied)
+                {
+                    targetSq.Deactivate();    // Tắt ảnh khối gạch
+                    targetSq.ClearOccupied(); // Trả lại trạng thái ô trống
+                    totalBlocksCleared++;
+                }
+            }
+        }
+
+        // + điểm với toàn bộ các khối gạch đã bị nổ mất
+        if (Score.Instance != null && totalBlocksCleared > 0)
+        {
+            Score.Instance.AddScore(totalBlocksCleared * 5);
+        }
+
+        Debug.Log("BÙM! Đã xóa sạch " + totalBlocksCleared + " ô gạch!");
+    }
+
+    public void DisableUndo()
+    {
+        canUndo = false; // Tắt quyền Undo vĩnh viễn cho đến khi có lượt đặt mới
     }
 }
