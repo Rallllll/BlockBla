@@ -47,7 +47,13 @@ public class HelpBoosterManager : MonoBehaviour
     // Các hàm để gắn vào On click của UI button
     public void OnClick_RefreshBooster()
     {
-        if (refreshCount <= 0) return;
+        if (SoundEffect.Instance != null) SoundEffect.Instance.PlayClick();
+
+        if (refreshCount <= 0)
+        {
+            if (SoundEffect.Instance != null) SoundEffect.Instance.PlayError();
+            return;
+        }
         if (shapeStorage != null) 
             shapeStorage.Logic_RefreshShapes();
 
@@ -57,7 +63,11 @@ public class HelpBoosterManager : MonoBehaviour
 
     public void OnClick_UndoBooster()
     {
-        if (undoCount <= 0) return; // Hết sạch lượt thì không chạy tiếp
+        if (undoCount <= 0)
+        {
+            if (SoundEffect.Instance != null) SoundEffect.Instance.PlayError();
+            return;
+        }// Hết sạch lượt thì không chạy tiếp
 
         if (Grid.Instance != null)
         {
@@ -67,7 +77,7 @@ public class HelpBoosterManager : MonoBehaviour
             // NẾU GRID TRẢ VỀ TRUE -> MỚI PHÁT CLICK VÀ TRỪ LƯỢT!
             if (undoSuccess)
             {
-                //if (SoundEffect.Instance != null) SoundEffect.Instance.PlayClick();
+                if (SoundEffect.Instance != null) SoundEffect.Instance.PlayClip();
 
                 undoCount--; //  Trừ lượt ở đây cực kỳ an toàn
                 UpdateAllBoosterUI(); // Cập nhật số hiển thị
@@ -75,16 +85,35 @@ public class HelpBoosterManager : MonoBehaviour
             else
             {
                 // (Tùy chọn) Phát tiếng âm thanh báo lỗi nhẹ nếu người chơi bấm cố lúc không được phép
-                //if (SoundEffect.Instance != null) SoundEffect.Instance.PlayError();
+                if (SoundEffect.Instance != null) SoundEffect.Instance.PlayError();
             }
         }
     }
 
     public void OnClick_BombBooster()
     {
-        if (bombCount <= 0) return;
-        if (Grid.Instance != null) 
-            Grid.Instance.Logic_ExplodeClearAll_Immediate();
+        if (bombCount <= 0)
+        {
+            if (SoundEffect.Instance != null) SoundEffect.Instance.PlayError();
+            return;
+        }
+
+        if (Grid.Instance != null)
+        {
+            if (Grid.Instance.IsGridEmpty())
+            {
+                Debug.Log("Bàn cờ đang trống trơn, bấm Bom làm gì cho phí bồ ơi!");
+
+                // (Tùy chọn) Có thể phát tiếng tít tít báo lỗi ở đây nếu muốn
+                if (SoundEffect.Instance != null) SoundEffect.Instance.PlayError();
+
+                return; // ❌ Chặn đứng luồng code tại đây, không cho chạy xuống đoạn trừ lượt ở dưới!
+            }
+        } 
+
+        if (SoundEffect.Instance != null) SoundEffect.Instance.PlayClick();
+
+        Grid.Instance.Logic_ExplodeClearAll_Immediate();
 
         bombCount--;
         UpdateAllBoosterUI();

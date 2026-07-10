@@ -435,4 +435,23 @@ public class Grid : MonoBehaviour
     {
         canUndo = false; // Tắt quyền Undo vĩnh viễn cho đến khi có lượt đặt mới
     }
+
+    public bool IsGridEmpty()
+    {
+        if (gridSquaresMatrix == null) return true;
+
+        // Quét toàn bộ ma trận lưới
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < columns; c++)
+            {
+                // Chỉ cần phát hiện 1 ô duy nhất đang có gạch (isOccupied == true)
+                if (gridSquaresMatrix[c, r] != null && gridSquaresMatrix[c, r].isOccupied)
+                {
+                    return false; // Bàn cờ đang chơi dở, KHÔNG trống!
+                }
+            }
+        }
+        return true; // Quét hết sạch mà ko thấy viên nào -> Bàn cờ trống trơn!
+    }
 }
