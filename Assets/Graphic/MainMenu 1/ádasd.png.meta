@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 80e963e5678e38849b5cca4ee3320087
+guid: 166b4c81faf27e34f93a47cc3ac1582e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5417023964896865715
-    second: svgviewer-png-output (3)_0
+      213: -1684146418360887767
+    second: "\xE1dasd_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: svgviewer-png-output (3)_0
+      name: "\xE1dasd_0"
       rect:
         serializedVersion: 2
-        x: 17
-        y: 10
-        width: 216
-        height: 225
+        x: 0
+        y: 0
+        width: 181
+        height: 189
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3bda47f68922d2b40800000000000000
-      internalID: 5417023964896865715
+      spriteID: 9265ad761c5b0a8e0800000000000000
+      internalID: -1684146418360887767
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      svgviewer-png-output (3)_0: 5417023964896865715
+      "\xE1dasd_0": -1684146418360887767
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
